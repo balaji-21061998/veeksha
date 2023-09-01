@@ -1,0 +1,16 @@
+---
+- name: Create files with different names
+  hosts: all
+  become: true
+  tasks:
+    - name: Create files
+      ansible.builtin.file:
+        path: "/tmp/{{ item }}.txt"
+        state: touch
+      loop:
+        - file1
+        - file2
+        - file3
+        - file4
+      
+

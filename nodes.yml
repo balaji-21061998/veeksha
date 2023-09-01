@@ -1,0 +1,19 @@
+- name: Copy a file from node-1 to node-2
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Fetch the file from node-1 to Ansible controller
+      ansible.builtin.fetch:
+        src: /opt/sample.war  # Replace with the actual source file path on node-1
+        dest: /tmp/fetched_files/
+        flat: yes
+      delegate_to: 172.31.43.156
+      when: inventory_hostname == '172.31.43.156'
+
+    - name: Copy file from Ansible controller to node-2
+      ansible.builtin.copy:
+        src: /tmp/fetched_files/sample.war
+        dest: /opt    # Replace with the actual destination directory path on node-2
+      delegate_to: 172.31.33.173
+      when: inventory_hostname == '172.31.33.173'
+
